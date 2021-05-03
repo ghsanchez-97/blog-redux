@@ -7,8 +7,10 @@ import Tareas from './Tarea';
 const App = () => (
   <BrowserRouter>
     <Menu />
-    <Route exact path='/' component={Users} />
-    <Route exact path='/tareas' component={Tareas} />
+    <div className="margen">
+      <Route exact path='/' component={Users} />
+      <Route exact path='/tareas' component={Tareas} />
+    </div>
   </BrowserRouter>
 )
 export default App;
