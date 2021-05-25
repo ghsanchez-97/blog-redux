@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+}
+.col {
+  width: 100vw;
+  margin: 25px;
+}
+.col img {
+    width: 100%;
+}
