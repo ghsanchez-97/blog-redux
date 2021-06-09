@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import * as userActions from "../../actions/userActions";
 import Spinner from '../General/Spinner';
 import Error from '../General/Error';
+import Tabla from './Tabla'
 
 class Users extends React.Component {
   componentDidMount() {
@@ -20,31 +21,14 @@ class Users extends React.Component {
     }
 
     return (
-      <table className="tabla">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Correo</th>
-              <th>Enlace</th>
-            </tr>
-          </thead>
-          <tbody>{this.putFiles()}</tbody>
-        </table>
+      <Tabla/>
     )
   }
-
-  putFiles = () =>
-    this.props.users.map((user) => (
-      <tr key={user.id}>
-        <td>{user.name}</td>
-        <td>{user.email}</td>
-        <td>{user.website}</td>
-      </tr>
-    ));
 
   render() {
     return (
       <div>
+        <h1>Usuarios</h1>
         {this.putContent() }
       </div>
     )
