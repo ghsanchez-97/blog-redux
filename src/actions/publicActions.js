@@ -1,13 +1,12 @@
+import { RETURN_ALL, LOADING, ERROR } from "../types/public-types";
 import axios from "axios";
-import { LOADING, RETURN_ALL, ERROR } from "../types/user-types";
 
 export const getAll = () => async (dispatch) => {
   dispatch({
     type: LOADING,
   });
   try {
-    const res = await axios.get("https://jsonplaceholder.typicode.com/users");
-
+    const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
     dispatch({
       type: RETURN_ALL,
       payload: res.data,
