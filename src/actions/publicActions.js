@@ -19,3 +19,16 @@ export const getAll = () => async (dispatch) => {
     });
   }
 };
+
+export const getForUser = (key) => async (dispatch, getState) => {
+  const { users } = getState().usersReducer;
+  const user_id = users[key].id;
+
+  const res = await axios.get(
+    `https://jsonplaceholder.typicode.com/posts?userId=${user_id}`
+  );
+  dispatch({
+    type: RETURN_ALL,
+    payload: res.data,
+  });
+};

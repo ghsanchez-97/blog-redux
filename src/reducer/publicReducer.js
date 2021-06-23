@@ -13,6 +13,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         publics: action.payload,
         loading: false,
+        error: ''
       };
 
     case LOADING:

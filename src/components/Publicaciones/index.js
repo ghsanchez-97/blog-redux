@@ -4,13 +4,14 @@ import * as userActions from "../../actions/userActions";
 import * as publicActions from "../../actions/publicActions";
 
 const { getAll: usersGetAll } = userActions;
-const { getAll: publicsGetAll } = publicActions;
+const { getForUser: publicsForUser } = publicActions;
 
 class Publicaciones extends React.Component {
-  componentDidMount() {
+  async componentDidMount() {
     if (!this.props.usersReducer.users.length) {
-      this.props.usersGetAll();
+      await this.props.usersGetAll();
     }
+    this.props.publicsForUser(this.props.match.params.key);
   }
 
   render() {
@@ -33,7 +34,7 @@ const mapStateToProps = ({ usersReducer, publicReducer }) => {
 
 const mapDispatchToProps = {
     usersGetAll,
-    publicsGetAll
+    publicsForUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Publicaciones);
