@@ -1,4 +1,4 @@
-import { RETURN_ALL, LOADING, ERROR } from "../types/public-types";
+import { RETURN_FOR_USER, LOADING, ERROR } from "../types/public-types";
 
 const INITIAL_STATE = {
   publics: [],
@@ -8,7 +8,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case RETURN_ALL:
+    case RETURN_FOR_USER:
       return {
         ...state,
         publics: action.payload,

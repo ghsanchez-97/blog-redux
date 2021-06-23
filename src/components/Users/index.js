@@ -8,7 +8,9 @@ import Tabla from './Tabla'
 
 class Users extends React.Component {
   componentDidMount() {
-    this.props.getAll();
+    if(!this.props.users.lenght){
+      this.props.getAll();
+    }
   }
 
   putContent = () => {
@@ -26,6 +28,7 @@ class Users extends React.Component {
   }
 
   render() {
+    console.log('usuarios', this.props)
     return (
       <div>
         <h1>Usuarios</h1>
