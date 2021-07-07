@@ -3,58 +3,105 @@ import { connect } from "react-redux";
 import * as userActions from "../../actions/userActions";
 import * as publicActions from "../../actions/publicActions";
 import Spinner from "../General/Spinner";
-import Error from "../General/Error"; 
+import Error from "../General/Error";
+import '../styles/App.css'
 
 const { getAll: usersGetAll } = userActions;
 const { getForUser: publicsForUser } = publicActions;
 
 class Publicaciones extends React.Component {
   async componentDidMount() {
-
     const {
       usersGetAll,
       publicsForUser,
-      match:{ params: { key } }
+      match: {
+        params: { key },
+      },
     } = this.props;
 
     if (!this.props.usersReducer.users.length) {
       await usersGetAll();
     }
 
-    if(this.props.usersReducer.error){
+    if (this.props.usersReducer.error) {
       return;
     }
 
-    if(!('publics_key' in this.props.usersReducer.users[key])){
+    if (!("publics_key" in this.props.usersReducer.users[key])) {
       publicsForUser(key);
     }
   }
-  
-  putUser = () =>{
-    const { usersReducer, match:{ params: { key } }} = this.props;
 
-    if(usersReducer.error){
-      return <Error message={usersReducer.error} />
+  putUser = () => {
+    const {
+      usersReducer,
+      match: {
+        params: { key },
+      },
+    } = this.props;
+
+    if (usersReducer.error) {
+      return <Error message={usersReducer.error} />;
+    }
+
+    if (!usersReducer.users.length || usersReducer.loading) {
+      return <Spinner />;
+    }
+
+    const name = usersReducer.users[key].name;
+
+    return <h1>Publicaciones de {name} </h1>;
+  };
+
+  putPlubics = () => {
+    const {
+      usersReducer,
+      usersReducer: { users },
+      publicReducer,
+      publicReducer: { publics },
+      match:{ params: { key } }
+    } = this.props;
+
+    if(!users.length) return;
+
+    if(usersReducer.error) return;
+
+    if(publicReducer.loading){
+      return <Spinner />;
     }
     
-    if(!usersReducer.users.length || usersReducer.loading){
-      return <Spinner />
+    if(publicReducer.error){
+      return <Error message={publicReducer.error} />;
     }
 
-    const name = usersReducer.users[key].name
+    if(!publics.length) return;
 
-    return(
-      <h1>Publicaciones de {name} </h1>
-    )
+    if(!('publics_key' in users[key])) return;
 
-  }
+    const { publics_key } = users[key];
+
+    return publics[publics_key].map((publics) => (
+      <div 
+      className="pub_title"
+      key={publics.id}
+      onClick={() => alert(publics.id)}
+      >
+        <h2>
+          {publics.title}
+        </h2>
+        <h3>
+          {publics.body}
+        </h3>
+      </div>
+    ))
+  };
 
   render() {
     console.log(this.props);
     return (
       <React.Fragment>
-        {this.props.match.params.key}
         {this.putUser()}
+        {this.putPlubics()}
       </React.Fragment>
     );
   }
@@ -68,8 +115,8 @@ const mapStateToProps = ({ usersReducer, publicReducer }) => {
 };
 
 const mapDispatchToProps = {
-    usersGetAll,
-    publicsForUser
-}
+  usersGetAll,
+  publicsForUser,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Publicaciones);

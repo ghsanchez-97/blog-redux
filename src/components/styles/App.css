@@ -9,3 +9,7 @@
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+.pub_title{
+  border-top: 1px solid blue;
+}
