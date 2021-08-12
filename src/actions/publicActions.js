@@ -1,4 +1,4 @@
-import { RETURN_FOR_USER, LOADING, ERROR } from "../types/public-types";
+import { UPDATE, LOADING, ERROR } from "../types/public-types";
 import * as usertypes from "../types/user-types";
 import axios from "axios";
 
@@ -18,11 +18,20 @@ export const getForUser = (key) => async (dispatch, getState) => {
     const res = await axios.get(
       `https://jsonplaceholder.typicode.com/posts?userId=${user_id}`
     );
+
+    const news = res.data.map((publics) => ({
+      ...publics,
+      comments: [],
+      open: false
+    }));
   
-    const publics_update = [...publics, res.data];
+    const publics_update = [
+      ...publics, 
+      news
+    ];
   
     dispatch({
-      type: RETURN_FOR_USER,
+      type: UPDATE,
       payload: publics_update,
     });
   
@@ -44,5 +53,27 @@ export const getForUser = (key) => async (dispatch, getState) => {
       payload: 'Publicaciones no disponibles.'
     })
   }
+
+};
+
+export const openexit = (pub_key, com_key) => (dispatch, getState) => {
+  const { publics } = getState().publicReducer;
+  const selection = publics[pub_key][com_key];
+
+  const update = {
+    ...selection,
+    open: !selection.open
+  };
+
+  const publics_update = [...publics];
+  publics_update[pub_key] = [
+    ...publics[pub_key]
+  ];
+  publics_update[pub_key][com_key] = update;
+
+  dispatch({
+    type: UPDATE,
+    payload: publics_update,
+  });
 
 };

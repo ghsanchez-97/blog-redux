@@ -4,10 +4,10 @@ import * as userActions from "../../actions/userActions";
 import * as publicActions from "../../actions/publicActions";
 import Spinner from "../General/Spinner";
 import Error from "../General/Error";
-import '../styles/App.css'
+import "../styles/App.css";
 
 const { getAll: usersGetAll } = userActions;
-const { getForUser: publicsForUser } = publicActions;
+const { getForUser: publicsForUser, openexit } = publicActions;
 
 class Publicaciones extends React.Component {
   async componentDidMount() {
@@ -59,42 +59,50 @@ class Publicaciones extends React.Component {
       usersReducer: { users },
       publicReducer,
       publicReducer: { publics },
-      match:{ params: { key } }
+      match: {
+        params: { key },
+      },
     } = this.props;
 
-    if(!users.length) return;
+    if (!users.length) return;
 
-    if(usersReducer.error) return;
+    if (usersReducer.error) return;
 
-    if(publicReducer.loading){
+    if (publicReducer.loading) {
       return <Spinner />;
     }
-    
-    if(publicReducer.error){
+
+    if (publicReducer.error) {
       return <Error message={publicReducer.error} />;
     }
 
-    if(!publics.length) return;
+    if (!publics.length) return;
 
-    if(!('publics_key' in users[key])) return;
+    if (!("publics_key" in users[key])) return;
 
     const { publics_key } = users[key];
 
-    return publics[publics_key].map((publics) => (
-      <div 
-      className="pub_title"
-      key={publics.id}
-      onClick={() => alert(publics.id)}
+    return this.showInfo(
+      publics[publics_key],
+      publics_key,
+    )
+  };
+
+  showInfo = (publics, pub_key) => (
+    publics.map((publics, com_key) => (
+      <div
+        className="pub_title"
+        key={publics.id}
+        onClick={() => this.props.openexit(pub_key, com_key)}
       >
-        <h2>
-          {publics.title}
-        </h2>
-        <h3>
-          {publics.body}
-        </h3>
+        <h2>{publics.title}</h2>
+        <h3>{publics.body}</h3>
+        {
+          (publics.open) ? 'Open' : 'Close'
+        }
       </div>
     ))
-  };
+  );
 
   render() {
     console.log(this.props);
@@ -117,6 +125,7 @@ const mapStateToProps = ({ usersReducer, publicReducer }) => {
 const mapDispatchToProps = {
   usersGetAll,
   publicsForUser,
+  openexit
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Publicaciones);
