@@ -5,9 +5,10 @@ import * as publicActions from "../../actions/publicActions";
 import Spinner from "../General/Spinner";
 import Error from "../General/Error";
 import "../styles/App.css";
+import Comment from './comment'
 
 const { getAll: usersGetAll } = userActions;
-const { getForUser: publicsForUser, openexit } = publicActions;
+const { getForUser: publicsForUser, openexit, getComments } = publicActions;
 
 class Publicaciones extends React.Component {
   async componentDidMount() {
@@ -93,19 +94,25 @@ class Publicaciones extends React.Component {
       <div
         className="pub_title"
         key={publics.id}
-        onClick={() => this.props.openexit(pub_key, com_key)}
+        onClick={() => this.showComments(pub_key, com_key,publics.comments)}
       >
         <h2>{publics.title}</h2>
         <h3>{publics.body}</h3>
         {
-          (publics.open) ? 'Open' : 'Close'
+          (publics.open) ? <Comment comments={publics.comments} /> : null
         }
       </div>
     ))
   );
 
+  showComments = (pub_key, com_key, comments) => {
+    this.props.openexit(pub_key, com_key);
+    if(!comments.length){
+      this.props.getComments(pub_key, com_key);
+    }
+  }
+
   render() {
-    console.log(this.props);
     return (
       <React.Fragment>
         {this.putUser()}
@@ -125,7 +132,8 @@ const mapStateToProps = ({ usersReducer, publicReducer }) => {
 const mapDispatchToProps = {
   usersGetAll,
   publicsForUser,
-  openexit
+  openexit,
+  getComments
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Publicaciones);

@@ -12,4 +12,8 @@
 
 .pub_title{
   border-top: 1px solid blue;
+  cursor: pointer
+}
+li{
+  margin: 15px 0;
 }
