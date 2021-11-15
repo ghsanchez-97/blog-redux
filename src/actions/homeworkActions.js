@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LOADING, RETURN_ALL, ERROR } from "../types/homeworkTypes";
+import { LOADING, RETURN_ALL, ERROR, USERCHANGEID, USERCHANGETITLE } from "../types/homeworkTypes";
 
 export const getAll = () => async (dispatch) => {
   dispatch({
@@ -30,3 +30,18 @@ export const getAll = () => async (dispatch) => {
     });
   }
 };
+
+// Cambiar estado de tarea
+export const UserChangeId = (userId) => dispatch => {
+  dispatch({
+    type: USERCHANGEID,
+    payload: userId,
+  });
+}
+
+export const UserChangeTitle = (userTitle) => dispatch => {
+  dispatch({
+    type: USERCHANGETITLE,
+    payload: userTitle,
+  });
+}

@@ -1,9 +1,11 @@
-import { RETURN_ALL, LOADING, ERROR } from "../types/homeworkTypes";
+import { RETURN_ALL, LOADING, ERROR, USERCHANGEID, USERCHANGETITLE } from "../types/homeworkTypes";
 
 const INITIAL_STATE = {
   tareas: {},
   loading: false,
   error: "",
+  user_id: '',
+  title: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -21,6 +23,12 @@ export default (state = INITIAL_STATE, action) => {
 
     case ERROR:
       return { ...state, error: action.payload, loading: false };
+
+    case USERCHANGEID:
+      return {...state, user_id: action.payload};
+
+    case USERCHANGETITLE:
+      return {...state, title: action.payload};
 
     default:
       return state;

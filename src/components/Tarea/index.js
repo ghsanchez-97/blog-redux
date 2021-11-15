@@ -1,6 +1,9 @@
 import React from "react";
+//Importacion de redux
 import { connect } from "react-redux";
 import { getAll } from "../../actions/homeworkActions";
+//Importación de Link
+import { Link } from "react-router-dom";
 //Importación de los componentes loadings y errors
 import Loading from "../General/Spinner";
 import Error from "../General/Error";
@@ -8,7 +11,6 @@ import Error from "../General/Error";
 import "./styles.css";
 
 const Tareas = ({ tareasReducer }) => {
-  console.log("Tareas", tareasReducer);
 
   const showContent = () => {
     const { tareas, loading, error } = tareasReducer;
@@ -42,6 +44,9 @@ const Tareas = ({ tareasReducer }) => {
 
   return (
     <React.Fragment>
+      <button>
+        <Link to="/tareas/saves">Agregar Tarea</Link>
+      </button>
       <div>{showContent()}</div>
     </React.Fragment>
   );
